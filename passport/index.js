@@ -19,10 +19,22 @@ module.exports = () => {
   // passport.serializeUser의 done의 2번째 인수가 passport.deserializeUser의 매개변수가 됨
   passport.deserializeUser((id, done) => {
     // id로 DB 조회하여 사용자 정보(user)를 req.user에 저장 => routes/page.js 등에 사용됨
-    User.findOne({ where: { id } })
-      .then((user) => {
-        done(null, user);
-      })
+    User.findOne({
+      where: { id },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nick'],
+          as: 'Followers',
+        },
+        {
+          model: User,
+          attributes: ['id', 'nick'],
+          as: 'Followings',
+        },
+      ],
+    })
+      .then((user) => done(null, user))
       .catch((err) => done(err));
   });
 

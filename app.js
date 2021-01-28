@@ -12,6 +12,8 @@ dotenv.config();
 const pageRouter = require('./routes/page');
 // 회원가입, 로그인, 로그아웃 라우터
 const authRouter = require('./routes/auth');
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 // 모델과 서버 연결
 const { sequelize } = require('./models');
 // passport 모듈 연결
@@ -40,6 +42,8 @@ sequelize
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+//  이미지 업로드 제공할 라우터
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -63,6 +67,8 @@ app.use(passport.session());
 app.use('/', pageRouter);
 // 회원가입, 로그인, 로그아웃 라우터
 app.use('/auth', authRouter);
+app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
@@ -77,6 +83,4 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-app.listen(app.get('port'), () => {
-  console.log(app.get('port'), '번 포트에서 대기 중');
-});
+module.exports = app;

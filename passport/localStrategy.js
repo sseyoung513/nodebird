@@ -1,13 +1,13 @@
 const passport = require('passport');
 // 로컬 로그인 전략 구현위해 LocalStorage 생성자 불러옴
-const LocalStorage = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 module.exports = () => {
   passport.use(
     // 로컬 로그인 전략 구현
-    new LocalStorage(
+    new LocalStrategy(
       // 1번째 객체 : 전략에 관한 설정
       {
         usernameField: 'email', // 일치하는 로그인 라우터의 req.body 속성명

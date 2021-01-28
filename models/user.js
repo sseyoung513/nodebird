@@ -16,7 +16,7 @@ module.exports = class User extends (
           allowNull: false,
         },
         password: {
-          type: Sequelize.STRING(10),
+          type: Sequelize.STRING(100),
           allowNull: true,
         },
         provider: {
